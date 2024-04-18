@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
+        <style>
+.nav .nav-btns {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    border: 2px solid black;
+    border-radius: 20px;
+    color: black;
+    height: 60px;
+    width: 60px;
+    display: grid;
+    place-items: center;
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    transition: 0.5s;
+    transition-delay: 1.1s;
+}
+
+.nav .nav-btns.active {
+    border: 2px solid white;
+    color: white;
+    transition: 0.5s;
+}
+
+.nav .nav-btns .open {
+    position: absolute;
+    font-size: 40px;
+    transform: translateY(5px) scale(1);
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.nav .nav-btns.active .open {
+    opacity: 0;
+    transform: translateY(5px) scale(0);
+    transition: 0.5s;
+}
+
+.nav .nav-btns .close {
+    position: absolute;
+    font-size: 50px;
+    transform: translateY(6px) scale(0);
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.nav .nav-btns.active .close {
+    opacity: 1;
+    transform: translateY(6px) scale(1);
+    transition: 0.5s;
+}
+
+.nav-content {
+    height: 100vh;
+    max-width: 430px;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background: #081b29;
+    transform: translateX(-450px);
+    transition: 0.5s;
+    overflow: scroll;
+}
+
+.nav-content.active {
+    transform: translateX(0);
+    transition: 0.5s;
+}
+
+.nav-content > ul {
+    position: absolute;
+    top: 80px;
+    left: -20px;
+    width: calc(100% - 40px);
+    list-style: none;
+}
+
+.nav-content > ul > li {
+    margin-top: 20px;
+    width: 100%;
+    
+}
+
+.nav-content > ul > li > button {
+    width: 100%;
+    background: transparent;
+    outline: none;
+    border: none;
+    font-size: 30px;
+    text-align: left;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.nav-content > ul > li > button > ion-icon {
+    position: absolute;
+    right: 0;
+}
+
+.nav-content > ul > li > ul {
+    list-style: none;
+}
+
+.nav-content > ul > li > ul > li {
+    margin-top: 20px;
+}
+
+.nav-content > ul > li > ul > li > button {
+    width: 100%;
+    background: transparent;
+    outline: none;
+    border: none;
+    font-size: 30px;
+    text-align: left;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#dd1 {
+    height: 35px;
+    overflow: hidden;
+    position: relative;
+    transition: height 0.5s;
+}
+
+#dd1::after {
+    content: ""; 
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0px; 
+    height: 2px; 
+    background: linear-gradient(to right, #ff5f6d, #ffc371, #48c6ef, #6f86d6);
+    transform: translateX(-50%); 
+    opacity: 0;
+    transition: 0.3s;
+}
+
+#dd1.active {
+    height: 260px;
+    transition: height 0.5s;
+}
+
+#dd1.active::after {
+    opacity: 1;
+    width: 150px;
+    transition: 0.3s;
+    transition-delay: 0.8s;
+}
+
+#dd1 ion-icon {
+    transform: rotate(0deg);
+    transition: 0.3s;
+}
+
+#dd1.active ion-icon {
+    transform: rotate(180deg);
+    transition: 0.3s;
+}
+
+#dd2 {
+    height: 35px;
+    overflow: hidden;
+    position: relative;
+    transition: 0.5s;
+}
+
+#dd2::after {
+    content: ""; 
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0px; 
+    height: 2px; 
+    background: linear-gradient(to right, #ff5f6d, #ffc371, #48c6ef, #6f86d6);
+    transform: translateX(-50%); 
+    opacity: 0;
+    transition: 0.3s;
+}
+
+#dd2.active {
+    height: 210px;
+    transition: 0.5s;
+}
+
+#dd2.active::after {
+    opacity: 1;
+    width: 150px;
+    transition: 0.3s;
+    transition-delay: 0.8s;
+}
+
+#dd2 ion-icon {
+    transform: rotate(0deg);
+    transition: 0.3s;
+}
+
+#dd2.active ion-icon {
+    transform: rotate(180deg);
+    transition: 0.3s;
+}
+
+.nav-content > ul > li > button {
+    transform: translateY(-450px);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+    transition-delay: calc(0.1s*var(--i));
+}
+
+.nav-content.load > ul > li > button {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    transition: 0.5s;
+    transition-delay: calc(0.1s*var(--j));
+}
+
+@media screen and (min-width: 365px) and (max-width: 418px) {
+    #dd2 {
+        height: 30px;
+        overflow: hidden;
+        position: relative;
+        transition: 0.5s;
+    }
+
+    #dd2.active {
+        height: 250px;
+        transition: 0.5s;
+    }
+}
+
+@media screen and (min-width: 347px) and (max-width: 364px) {
+    #dd2 {
+        height: 30px;
+        overflow: hidden;
+        position: relative;
+        transition: 0.5s;
+    }
+
+    #dd2.active {
+        height: 270px;
+        transition: 0.5s;
+    }
+}
+
+@media screen and (max-width: 346px) {
+    #dd2 {
+        height: 30px;
+        overflow: hidden;
+        position: relative;
+        transition: 0.5s;
+    }
+
+    #dd2.active {
+        height: 310px;
+        transition: 0.5s;
+    }
+}
+
+@media screen and (max-width: 383px) {
+    #dd1 {
+        height: 30px;
+        overflow: hidden;
+        position: relative;
+        transition: height 0.5s;
+    }
+
+    #dd1.active {
+        height: 340px;
+        transition: height 0.5s;
+    }
+
+}            
+
+.nav-t {
+    color: white;
+    position: relative;
+    transition: 0.3s;
+}
+
+.nav-t::after {
+    content: ""; 
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0px; 
+    height: 2px; 
+    background-color: #FFEB3B;
+    transform: translateX(-50%); 
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.nav-t:hover {
+    color: #FFEB3B;
+    transition: 0.3s;
+}
+
+.nav-t:hover::after {
+    width: 100%;
+    opacity: 1;
+    transition: 0.3s;
+}
+        </style>
+    </head>
+    <body>
+        <div class="nav">
+            <div class="nav-btns">
+                <span class="open"><ion-icon name="grid"></ion-icon></span>
+                <span class="close"><ion-icon name="close"></ion-icon></span>
+            </div>
+            <div class="nav-content">
+                <ul>
+                    <li>
+                        <button style="--i:1; --j:7;"><span class="nav-t">Home</span></button>
+                    </li>
+                    <li>
+                        <button style="--i:2; --j:6;"><span class="nav-t">About</span></button>
+                    </li>
+                    <li id="dd1">
+                        <button style="--i:3; --j:5;"><span class="nav-t">Message</span><ion-icon name="arrow-down-circle" id="dd1--arrow"></ion-icon></button>
+                        <ul>
+                            <li>
+                                <button><span class="nav-t">Founder Chairman</span></button>
+                            </li>
+                            <li>
+                                <button><span class="nav-t">Founder Director</span></button>
+                            </li>
+                            <li>
+                                <button><span class="nav-t">Chairman</span></button>
+                            </li>
+                            <li>
+                                <button><span class="nav-t">Principal</span></button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="dd2">
+                        <button style="--i:4; --j:4;"><span class="nav-t">Details</span><ion-icon name="arrow-down-circle" id="dd2--arrow"></ion-icon></button>
+                        <ul>
+                            <li>
+                                <button><span class="nav-t">School Details</span></button>
+                            </li>
+                            <li>
+                                <button><span class="nav-t">Managing Committee</span></button>
+                            </li>
+                            <li>
+                                <button><span class="nav-t">Faculty Details</span></button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <button style="--i:5; --j:3;"><span class="nav-t">Addmission</span></button>
+                    </li>
+                    <li>
+                        <button style="--i:6; --j:2;"><span class="nav-t">Download</span></button>
+                    </li>
+                    <li>
+                        <button style="--i:7; --j:1;"><span class="nav-t">Contact Us</span></button>
+                    </li>
+                </ul>
+            </div>
+        </div> 
+            
+        <script>
+const navBtn = document.querySelector(".nav-btns");
+const navCon = document.querySelector(".nav-content");
+const dd1 = document.getElementById("dd1");
+const dd2 = document.getElementById("dd2");
+const d1_ar = document.getElementById("dd1--arrow");
+const d2_ar = document.getElementById("dd2--arrow");
+
+navBtn.addEventListener("click", function() {
+  navBtn.classList.toggle("active"); 
+  if (navBtn.classList.contains("active")) {
+    navCon.classList.add("active");
+    setTimeout(function() {  
+      navCon.classList.add("load");
+    }, 500);          
+  } else if (dd1.classList.contains("active") || dd2.classList.contains("active")) {
+    dd1.classList.remove("active");
+    dd2.classList.remove("active");
+    setTimeout(function() {
+        navCon.classList.remove("load");
+    }, 500);
+    setTimeout(function() {  
+      navCon.classList.remove("active");
+    }, 1700);   
+  } else {
+    navCon.classList.remove("load");
+    setTimeout(function() {  
+      navCon.classList.remove("active");
+    }, 1200);   
+  }
+});
+
+navCon.addEventListener("click", function(event) {
+    if (d1_ar.contains(event.target)) {
+        dd2.classList.remove("active");
+        dd1.classList.toggle("active");
+    } else if (d2_ar.contains(event.target)) {
+        dd1.classList.remove("active");
+        dd2.classList.toggle("active");
+    } else if (dd1.contains(event.target)) {
+        dd1.classList.add("active");
+        dd2.classList.remove("active");
+    } else if (dd2.contains(event.target)) {
+        dd2.classList.add("active");
+        dd1.classList.remove("active");
+    } else {
+        dd1.classList.remove("active");
+        dd2.classList.remove("active");
+    }
+});
+        </script>
+    </body>
+</html>
